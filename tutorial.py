@@ -19,8 +19,27 @@ pygame.display.set_caption("Mr Platformer")
 window = pygame.display.set_mode((WIDTH, HEIGHT))
 
 # functions
+def get_background(color_name):
+    image = pygame.image.load(join("assets", "Background", color_name))
+    _, _, width, height = image.get_rect()
+
+    tiles = []
+    # marking locations (coords) for image/tile placement
+    for i in range(WIDTH //width + 1):
+        for j in range(HEIGHT // height + 1):
+            pos = (i*width, j*height)
+            tiles.append(pos)
+        
+    return tiles, image
+def draw(window, background, bg_image):
+    for tile in background:
+        window.blit(bg_image, tile)
+
+    pygame.display.update() # Clear and repaint
 def main(window):
+    
     clock = pygame.time.Clock()
+    background, bg_image = get_background("Pink.png")
 
     run = True
     while run:
@@ -30,6 +49,8 @@ def main(window):
             if event.type == pygame.QUIT:
                 run = False
                 break
+        
+        draw(window, background, bg_image)
         
     pygame.quit()
     quit()
