@@ -33,8 +33,8 @@ class Player(pygame.sprite.Sprite):
         self.animation_count = 0
 
     def move(self, dx, dy):
-        self.x_vel += dx
-        self.y_vel += dy
+        self.rect.x += dx
+        self.rect.y += dy
 
     def move_left(self, vel):
         self.x_vel = -vel
@@ -73,12 +73,26 @@ def get_background(color_name):
         
     return tiles, image
 
+
+# Draw on window (Screen)
 def draw(window, background, bg_image, player):
     for tile in background:
         window.blit(bg_image, tile)
 
     player.draw(window)
     pygame.display.update() # Clear and repaint
+
+# Handle Movement of Players
+def handle_move(player):
+    keys = pygame.key.get_pressed()
+
+    player.x_vel = 0
+    if keys[pygame.K_LEFT]:
+        player.move_left(PLAYER_VEL)
+    if keys[pygame.K_RIGHT]:
+        player.move_right(PLAYER_VEL)
+
+
 
 # GAME MASTER CONSOLE
 def main(window):
@@ -96,7 +110,9 @@ def main(window):
             if event.type == pygame.QUIT:
                 run = False
                 break
-        
+
+        player.loop(FPS)
+        handle_move(player)
         draw(window, background, bg_image, player)
         
     pygame.quit()
