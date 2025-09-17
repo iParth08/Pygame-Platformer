@@ -8,6 +8,6 @@
 
 - 💼
 - 🕐
-- 🤑 **45,000+ job openings** in the market
+- 🤑
 
-👉
+👉 https://youtu.be/6gLeplbqtqg?si=_oJFRfylRYFLTAf3&t=1098
