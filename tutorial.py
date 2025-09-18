@@ -147,7 +147,12 @@ class Player(pygame.sprite.Sprite):
 
         self.sprite = sprites[sprite_index]
         self.animation_count += 1
+        self.update()
 
+    def update(self):
+        # handle mask and collision (pixel-perfect), update is overriden here
+        self.rect = self.sprite.get_rect(topleft=(self.rect.x, self.rect.y))
+        self.mask = pygame.mask.from_surface(self.sprite)
 
     def draw(self, window):
         # pygame.draw.rect(window, self.COLOR, self.rect)
