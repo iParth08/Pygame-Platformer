@@ -95,6 +95,7 @@ class Player(pygame.sprite.Sprite):
     COLOR = (255, 0, 0) # Red player block
     GRAVITY = 1 # 9.8
     SPRITES = load_sprite_sheets("MainCharacters", "MaskDude", 32, 32, True)
+    ANIMATION_DELAY = 3
 
     def __init__(self, x, y, width, height):
         self.rect = pygame.Rect(x, y, width, height)
@@ -129,12 +130,27 @@ class Player(pygame.sprite.Sprite):
         # How this gravity logic works : Platform needed
         # self.y_vel += min(1, (self.fall_time / fps * self.GRAVITY))
         self.move(self.x_vel, self.y_vel)
-
         self.fall_time += 1
+
+        self.update_sprite()
+
+    def update_sprite(self):
+        sprite_sheet = "idle"
+
+        if self.x_vel != 0:
+            sprite_sheet = "run"
+        
+
+        sprite_sheet_name = sprite_sheet + "_" + self.direction
+        sprites = self.SPRITES[sprite_sheet_name]
+        sprite_index = (self.animation_count // self.ANIMATION_DELAY) % len(sprites)
+
+        self.sprite = sprites[sprite_index]
+        self.animation_count += 1
+
 
     def draw(self, window):
         # pygame.draw.rect(window, self.COLOR, self.rect)
-        self.sprite = self.SPRITES["idle_" + self.direction][0]
         window.blit(self.sprite, (self.rect.x, self.rect.y))
 
 
