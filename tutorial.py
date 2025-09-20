@@ -19,7 +19,6 @@ pygame.display.set_caption("Mr Platformer")
 window = pygame.display.set_mode((WIDTH, HEIGHT))
 
 
-
 # ---------------------------- Helper functions ----------------------------
 
 # Load background as required
@@ -78,14 +77,14 @@ def load_block(size):
     return pygame.transform.scale2x(surface)
 
 # Draw on window (Screen)
-def draw(window, background, bg_image, player, objects):
+def draw(window, background, bg_image, player, objects, offset_x):
     for tile in background:
         window.blit(bg_image, tile)
     
     for obj in objects:
-        obj.draw(window)
+        obj.draw(window, offset_x)
 
-    player.draw(window)
+    player.draw(window, offset_x)
     pygame.display.update() # Clear and repaint
 
 # Detect Vertical Collision
@@ -104,7 +103,6 @@ def handle_vertical_collision(player, objects, dy):
     
     return collided_objects
         
-
 # Handle Movement of Players
 def handle_move(player, objects):
     keys = pygame.key.get_pressed()
@@ -215,9 +213,9 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.sprite.get_rect(topleft=(self.rect.x, self.rect.y))
         self.mask = pygame.mask.from_surface(self.sprite)
 
-    def draw(self, window):
+    def draw(self, window, offset_x):
         # pygame.draw.rect(window, self.COLOR, self.rect)
-        window.blit(self.sprite, (self.rect.x, self.rect.y))
+        window.blit(self.sprite, (self.rect.x - offset_x, self.rect.y))
 
 # Terrain : interface
 class Object(pygame.sprite.Sprite):
@@ -231,9 +229,9 @@ class Object(pygame.sprite.Sprite):
         self.height = height
         self.name = name
 
-    def draw(self, window):
+    def draw(self, window, offset_x):
         # pygame.draw.rect(window, self.COLOR, self.rect)
-        window.blit(self.image, (self.rect.x, self.rect.y))
+        window.blit(self.image, (self.rect.x - offset_x, self.rect.y))
 
 # Block
 class Block(Object):
@@ -255,6 +253,9 @@ def main(window):
     # blocks = [Block(0, HEIGHT-block_size, block_size)]
     floor = [Block(i*block_size, HEIGHT-block_size, block_size) for i in range(-WIDTH // block_size, (WIDTH*2) // block_size)]
 
+    offset_x = 0
+    scroll_area_width = 200
+
     run = True
     while run:
         clock.tick(FPS) # Ensure max 60 fps
@@ -271,7 +272,10 @@ def main(window):
 
         player.loop(FPS)
         handle_move(player, floor)
-        draw(window, background, bg_image, player, floor)
+        draw(window, background, bg_image, player, floor, offset_x)
+
+        if (player.rect.right - offset_x > WIDTH - scroll_area_width and player.x_vel > 0) or (player.rect.left - offset_x <= scroll_area_width and player.x_vel < 0):
+            offset_x += player.x_vel
         
         
     pygame.quit()
