@@ -1,0 +1,42 @@
+# Mr-Platformer — Refactored Codebase (SOLID-friendly, modular, scalable)
+# ------------------------------------------------------------------
+# This single file contains multiple modules separated by headers.
+# Copy each module into a file under the project structure described below.
+# Project structure (create these files):
+# mr-platformer/
+# ├─ assets/ # put your images, sprites, audio here
+# ├─ src/
+# │ ├─ __init__.py
+# │ ├─ main.py
+# │ ├─ game.py
+# │ ├─ config.py
+# │ ├─ utils.py
+# │ ├─ player.py
+# │ ├─ objects.py
+# │ ├─ traps.py
+# │ ├─ renderer.py
+# │ ├─ level_loader.py
+# │ └─ input_handler.py
+# ├─ requirements.txt
+# └─ README.md
+# ------------------------------------------------------------------
+
+# End of modules
+# ------------------------------------------------------------------
+# TODO / PLACEHOLDERS for future extensions:
+# - enemies/AI: add src/enemies.py (Enemy base class, implementations)
+# - audio: add src/audio_manager.py, enable ENABLE_SOUNDS in config
+# - captions & dialogue: add src/dialog_manager.py
+# - player stats & inventory: add attributes to Player and save/load manager
+# - story/levels: create levels as JSON in levels/ and use level_loader
+# - UI: create simple HUD renderer to show health, score, captions
+# - tests: add unit tests for physics and loaders
+
+# This refactor keeps SOLID principles in mind:
+# - SRP: modules have focused responsibilities
+# - OCP: Trap and GameObject allow extension without modification
+# - LSP: subclasses maintain base class contracts
+# - ISP: Drawable/Collidable separate interfaces
+# - DIP: input and render are abstracted and injected into Game
+
+# Copy each section above into separate files under src/ and run main.py
